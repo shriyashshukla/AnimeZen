@@ -11,6 +11,9 @@ const Page = () => {
   const [isDropdown3Open, setIsDropdown3Open] = useState(false);
   const [isMobileDropdownOpen, setIsMobileDropdownOpen] = useState(false);
 
+const handleRoute = () => {
+    window.location.href = '/login';
+  };
 
   const handleMobileDropdownToggle = () => {
     setIsMobileDropdownOpen(!isMobileDropdownOpen);
@@ -78,9 +81,10 @@ const Page = () => {
               <a href="/contact" className="text-white">SAMURAI MERCH</a>
             </li>
           </ul>
-
+          
           <div className="hidden md:flex items-center">
-            <button className="text-white mx-4">
+          <button className="text-white mx-4">Tracking</button>
+            <button className="text-white mx-2" onClick={handleRoute}>
               <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-login" width="48" height="48" viewBox="0 0 24 24" stroke-width="1.5" stroke="#ffffff" fill="none" stroke-linecap="round" stroke-linejoin="round">
                 <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                 <path d="M15 8v-2a2 2 0 0 0 -2 -2h-7a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h7a2 2 0 0 0 2 -2v-2" />
@@ -88,7 +92,8 @@ const Page = () => {
                 <path d="M11 15l-3 -3" />
               </svg>
             </button>
-            <button className="text-white mx-4">Tracking</button>
+          
+           
           </div>
 
           <div className="md:hidden">
@@ -119,7 +124,7 @@ const Page = () => {
           </button>
         </div>
 
-        <header className="bg-black text-white hidden md:flex">
+        <header className="bg-black text-white hidden md:flex mx-auto">
           <ul className="flex p-6">
             <li>
               <a href="/" className="text-white mx-24">ACCESSORIES</a>
