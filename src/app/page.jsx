@@ -1,7 +1,6 @@
 "use client"
 import Link from 'next/link';
-import React, { useState } from 'react';
-
+import React, { useState , useRef ,useEffect} from 'react';
 
 const Page = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -11,13 +10,14 @@ const Page = () => {
   const [isDropdown3Open, setIsDropdown3Open] = useState(false);
   const [isMobileDropdownOpen, setIsMobileDropdownOpen] = useState(false);
 
-const handleRoute = () => {
+  const handleRoute = () => {
     window.location.href = '/login';
   };
 
   const handleMobileDropdownToggle = () => {
     setIsMobileDropdownOpen(!isMobileDropdownOpen);
   };
+
   const handleToggle = () => {
     setIsOpen(!isOpen);
   };
@@ -32,7 +32,6 @@ const handleRoute = () => {
 
   const handleDropdown1Toggle = () => {
     setIsDropdown1Open(!isDropdown1Open);
-    // Close dropdown 2 when opening dropdown 1
     if (isDropdown1Open && isDropdown2Open) {
       setIsDropdown2Open(false);
     }
@@ -40,18 +39,34 @@ const handleRoute = () => {
 
   const handleDropdown2Toggle = () => {
     setIsDropdown2Open(!isDropdown2Open);
-    // Close dropdown 1 when opening dropdown 2
     if (isDropdown2Open && isDropdown1Open) {
       setIsDropdown1Open(false);
     }
   };
+
   const handleDropdown3Toggle = () => {
     setIsDropdown3Open(!isDropdown3Open);
-    // Close dropdown 1 when opening dropdown 2
     if (isDropdown3Open && isDropdown1Open) {
       setIsDropdown1Open(false);
     }
   };
+
+  const sidebarRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (sidebarRef.current && !sidebarRef.current.contains(event.target)) {
+        handleCloseRightNavBar();
+      }
+    };
+
+    document.addEventListener('click', handleClickOutside);
+
+    return () => {
+      document.removeEventListener('click', handleClickOutside);
+    };
+  }, [handleCloseRightNavBar]);
+
   return (
     <>
       <div className="min-h-screen flex flex-col bg-black">
@@ -194,58 +209,58 @@ const handleRoute = () => {
         </section>
 
         {/* Right side nav bar */}
-        <nav className={isRightNavBarOpen ? "bg-black text-white fixed right-0 top-0 h-full w-full" : "hidden"}>
-          <div className="flex flex-col p-6">
-            <button className="closebutton" onClick={handleCloseRightNavBar}>
-              <span className="X"></span>
-              <span className="Y"></span>
-              <div className="close">Close</div>
-            </button>
+        <nav ref={sidebarRef} className={`bg-black text-white fixed ${isRightNavBarOpen ? 'right-0' : '-right-full'} top-0 h-full w-2/3 transition-all duration-300`}>
+          <button className="closebutton absolute top-0 left-0 m-4" onClick={handleCloseRightNavBar}>
+            <div className="close">Close</div>
+            <span className="Y"></span>
+            <span className="X"></span>
+          </button>
+  <div className="flex flex-col p-6 ">
+    {/* First Dropdown */}
+    <div className="flex flex-col">
+      <button className="text-white my-2 hover:text-gray-300" onClick={handleDropdown1Toggle}>
+        <span className="mr-2">Dropdown 1</span>
+      </button>
+      {isDropdown1Open && (
+        <div className="flex flex-col">
+          {/* Dropdown 1 content */}
+          <a href="/" className="text-white my-2 hover:text-gray-300 pl-6">Option 1</a>
+          <a href="/" className="text-white my-2 hover:text-gray-300 pl-6">Option 2</a>
+          <a href="/" className="text-white my-2 hover:text-gray-300 pl-6">Option 3</a>
+        </div>
+      )}
+    </div>
+    {/* Second Dropdown */}
+    <div className="flex flex-col">
+      <button className="text-white my-2 hover:text-gray-300" onClick={handleDropdown2Toggle}>
+        <span className="mr-2">Dropdown 2</span>
+      </button>
+      {isDropdown2Open && (
+        <div className="flex flex-col">
+          {/* Dropdown 2 content */}
+          <a href="/" className="text-white my-2 hover:text-gray-300 pl-6">Option A</a>
+          <a href="/" className="text-white my-2 hover:text-gray-300 pl-6">Option B</a>
+          <a href="/" className="text-white my-2 hover:text-gray-300 pl-6">Option C</a>
+        </div>
+      )}
+    </div>
+    <div className="flex flex-col">
+      <button className="text-white my-2 hover:text-gray-300" onClick={handleDropdown3Toggle}>
+        <span className="mr-2">Dropdown 3</span>
+      </button>
+      {isDropdown3Open && (
+        <div className="flex flex-col">
+          {/* Dropdown 3 content */}
+          <a href="/" className="text-white my-2 hover:text-gray-300 pl-6">Option A</a>
+          <a href="/" className="text-white my-2 hover:text-gray-300 pl-6">Option B</a>
+          <a href="/" className="text-white my-2 hover:text-gray-300 pl-6">Option C</a>
+        </div>
+      )}
+    </div>
+  </div>
+</nav>
 
-            {/* First Dropdown */}
-            <div className="flex flex-col">
-              <button className="text-white my-2 hover:text-gray-300" onClick={handleDropdown1Toggle}>
-                <span className="mr-2">Dropdown 1</span>
-              </button>
-              {isDropdown1Open && (
-                <div className="flex flex-col">
-                  {/* Dropdown 1 content */}
-                  <a href="/" className="text-white my-2 hover:text-gray-300 pl-6">Option 1</a>
-                  <a href="/" className="text-white my-2 hover:text-gray-300 pl-6">Option 2</a>
-                  <a href="/" className="text-white my-2 hover:text-gray-300 pl-6">Option 3</a>
-                </div>
-              )}
-            </div>
-
-            {/* Second Dropdown */}
-            <div className="flex flex-col">
-              <button className="text-white my-2 hover:text-gray-300" onClick={handleDropdown2Toggle}>
-                <span className="mr-2">Dropdown 2</span>
-              </button>
-              {isDropdown2Open && (
-                <div className="flex flex-col">
-                  {/* Dropdown 2 content */}
-                  <a href="/" className="text-white my-2 hover:text-gray-300 pl-6">Option A</a>
-                  <a href="/" className="text-white my-2 hover:text-gray-300 pl-6">Option B</a>
-                  <a href="/" className="text-white my-2 hover:text-gray-300 pl-6">Option C</a>
-                </div>
-              )}
-            </div>
-            <div className="flex flex-col">
-              <button className="text-white my-2 hover:text-gray-300" onClick={handleDropdown3Toggle}>
-                <span className="mr-2">Dropdown 3</span>
-              </button>
-              {isDropdown3Open && (
-                <div className="flex flex-col">
-                  {/* Dropdown 2 content */}
-                  <a href="/" className="text-white my-2 hover:text-gray-300 pl-6">Option A</a>
-                  <a href="/" className="text-white my-2 hover:text-gray-300 pl-6">Option B</a>
-                  <a href="/" className="text-white my-2 hover:text-gray-300 pl-6">Option C</a>
-                </div>
-              )}
-            </div>
-          </div>
-        </nav>
+        
       </div>
     </>
   );
